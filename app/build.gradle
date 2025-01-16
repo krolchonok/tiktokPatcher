@@ -1,0 +1,61 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdk 34
+
+    def signProperties = new Properties()
+    def signPropertiesFile = rootProject.file("for_build/sign.properties") // select your file with params
+    if (signPropertiesFile.exists()) {
+        signProperties.load(signPropertiesFile.newDataInputStream())
+    }
+
+    defaultConfig {
+        applicationId "com.ushastoe.$nameProject"
+        minSdk 21
+        targetSdk 35
+        versionCode appVerCode.toInteger()
+        versionName appVerName
+    }
+
+    applicationVariants.configureEach { variant ->
+        variant.resValue "string", "app_version", variant.versionName
+        variant.outputs.configureEach { output ->
+            if (variant.buildType.name == 'release') {
+                outputFileName = "${nameProject}_${defaultConfig.versionName}.apk"
+            }
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(signProperties.getProperty('storeFile'))
+            storePassword signProperties.getProperty('storePassword')
+            keyAlias signProperties.getProperty('keyAlias')
+            keyPassword signProperties.getProperty('keyPassword')
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    namespace "com.ushastoe.${nameProject}"
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    compileOnly 'de.robv.android.xposed:api:82'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:2.0.21"
+}
