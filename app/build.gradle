@@ -28,15 +28,6 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file(signProperties.getProperty('storeFile'))
-            storePassword signProperties.getProperty('storePassword')
-            keyAlias signProperties.getProperty('keyAlias')
-            keyPassword signProperties.getProperty('keyPassword')
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
