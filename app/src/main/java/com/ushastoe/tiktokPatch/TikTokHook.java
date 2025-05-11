@@ -12,9 +12,9 @@ public class TikTokHook implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(final XC_LoadPackage.LoadPackageParam lpparam) {
 
-        final String COUNTRY_ISO = "jp";
-        final String OPERATOR = "44010";
-        final String OPERATOR_NAME = "NTT DoCoMo";
+        final String COUNTRY_ISO = "CO";
+        final String OPERATOR = "73202";
+        final String OPERATOR_NAME = "Edatel";
 
         hookMethod("getSimCountryIso", COUNTRY_ISO);
         hookMethod("getNetworkCountryIso", COUNTRY_ISO);
